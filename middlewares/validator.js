@@ -1,0 +1,10 @@
+const { validationResult } = require("express-validator");
+
+exports.validator = (req, res, next) => {
+  console.log("the body validator middleware ");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
