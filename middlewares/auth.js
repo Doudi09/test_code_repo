@@ -10,7 +10,7 @@ exports.checkAuth = async (req, res, next) => {
     }
 
     const accessToken = authHeader.split(" ")[1];
-    console.log("the access token is " + accessToken);
+
     //decoding the access token
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err && err.name == "TokenExpiredError") {
@@ -37,9 +37,6 @@ exports.checkAuth = async (req, res, next) => {
 
 exports.checkRoleAccess = (...roles) => {
   return (req, res, next) => {
-    //
-    console.log("the role access is : ", roles);
-    console.log("the user roles are ", req.user);
     //
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({ message: "Unauthorized access" });

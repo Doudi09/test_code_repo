@@ -1,27 +1,28 @@
-const mongoose = require("mongoose");
-const category = require("../models/category");
-const Category = mongoose.model("Category");
+const Category = require("../models/category");
 
-// Controller function to register a new customer
 exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
 
-    // Create a new customer instance
+    // Create a new category instance
     const newCategory = new Category({
       name,
       description,
     });
 
-    // Save the new customer to the database
+    // Saving the new category to the database
     await newCategory.save();
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Category registered successfully.",
-      Category: newCategory,
+      category: {
+        id: newCategory._id,
+        name: newCategory.name,
+        description: newCategory.description,
+      },
     });
   } catch (error) {
-    console.error("Error registering :", error);
+    console.error("Error creating category :", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -34,14 +35,20 @@ exports.updateCategory = async (req, res) => {
     //updating the record :
     const updatedCategory = await Category.findByIdAndUpdate(
       { _id: id },
-      { name, description }
+      { name, description },
+      { new: true }
     );
-    return res.status(201).json({
-      message: "Category registered successfully.",
-      Category: updatedCategory,
+    //returning the updated category
+    return res.status(200).json({
+      message: "Category updated successfully.",
+      category: {
+        id: updatedCategory._id,
+        description: updatedCategory.description,
+        name: updatedCategory.name,
+      },
     });
   } catch (error) {
-    console.error("Error updating Category:", error);
+    console.error("Error updating Category:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -49,35 +56,37 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
+    //retrieving the category to delete from the db
     const deletedCategory = await Category.findById(id);
+    //soft delete ==> set the flag isDeleted to true
     deletedCategory.isDeleted = true;
     await deletedCategory.save();
 
     res.status(201).json({ message: "Category deleted successfully." });
   } catch (error) {
-    console.error("Error deleting Category:", error);
+    console.error("Error deleting Category:", error.message);
 
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 exports.getAllCategories = async (req, res) => {
   try {
-    const currentPage = parseInt(req.query.page) || 1;
-    const itemsPerPage = parseInt(req.query.itemsPerPage) || 5;
+    //data used for pagination
+    const currentPage = parseInt(req.query.page) || 1; //default value 1
+    const itemsPerPage = parseInt(req.query.itemsPerPage) || 5; //default value to 5
 
+    //calculate the offset based on the current page and items per page to skip
     const offset = (currentPage - 1) * itemsPerPage;
-
+    //getting the page of data
     const data = await Category.find().skip(offset).limit(itemsPerPage);
 
-    console.log(
-      "the totla pages with the filter ",
-      await Category.countDocuments()
-    );
+    //calculating  the number of pages
     const totalPages = Math.ceil(
       parseInt((await Category.countDocuments()) || 0) / itemsPerPage
     );
-    console.log("the total pages is ", totalPages);
-    res.status(200).json({
+    //return the result
+    return res.status(200).json({
       categories: data,
       currentPage,
       itemsPerPage,
@@ -86,7 +95,7 @@ exports.getAllCategories = async (req, res) => {
 
     // -----------------
   } catch (error) {
-    console.error("Error getting Categorys:", error);
+    console.error("Error getting Categorys:", error.message);
 
     res.status(500).json({ message: "Internal server error" });
   }
@@ -95,10 +104,12 @@ exports.getAllCategories = async (req, res) => {
 exports.getCategory = async (req, res) => {
   try {
     const { id } = req.params;
+    //getting the category by its id
     const category = await Category.findById({ _id: id });
-    res.status(200).json(category);
+    //returning the result
+    return res.status(200).json({ category: category });
   } catch (error) {
-    console.error("Error getting Category:", error);
+    console.error("Error getting Category:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };

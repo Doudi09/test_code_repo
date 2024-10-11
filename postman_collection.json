@@ -1,0 +1,1893 @@
+{
+  "info": {
+    "_postman_id": "a8484700-940c-4ebd-a4a7-863955c70050",
+    "name": "temtem_test",
+    "description": "Products and categories management systems with role based authentication controle.\n\n. CRUD for products and categories.\n\n. Authentication : login, register and refresh access token\n\n. User management : create new user, assign a role to a user, and delete a user.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26752177"
+  },
+  "item": [
+    {
+      "name": "authentication",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"client@gmail.com\",\r\n    \"password\": \"123\",\r\n    \"role\": \"client\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "register"]
+            },
+            "description": "this will allow creating a user."
+          },
+          "response": [
+            {
+              "name": "bad request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"password\": \"123\",\r\n    \"role\": \"admin\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "184"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b8-pP2VWtajSIUFlL+N/JrRJNjWbBg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:43:15 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"value\": \"\",\n            \"msg\": \"Invalid value\",\n            \"path\": \"email\",\n            \"location\": \"body\"\n        },\n        {\n            \"type\": \"field\",\n            \"value\": \"\",\n            \"msg\": \"Email is required !\",\n            \"path\": \"email\",\n            \"location\": \"body\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "success admin",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n\r\n    \"password\": \"123\",\r\n    \"role\": \"admin\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImlhdCI6MTcyODU0OTgxNSwiZXhwIjoxNzYwMTA3NDE1fQ.DdIN2PvMP3PNdQ13NxmJka6YSMFzBlRLbHL4hXo9BQk; Path=/; Expires=Fri, 11 Oct 2024 08:43:35 GMT; HttpOnly; Secure; SameSite=Strict"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "360"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"168-OXJfAHS2UasnQjGb+LtjUy/+voI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:43:35 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTQ5ODE1LCJleHAiOjE3Mjg1NTA3MTV9.N3eJSUxZE2lmdLCIGImlVj9CZgPQjV6vWPjT2uRSq6g\",\n    \"user\": {\n        \"id\": \"670793b7f2d8a2cdb5048b5a\",\n        \"email\": \"admin@gmail.com\",\n        \"role\": \"admin\"\n    },\n    \"message\": \"User registered successfully\"\n}"
+            },
+            {
+              "name": "email already exists",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n\r\n    \"password\": \"123\",\r\n    \"role\": \"admin\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "119"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"77-ZLpbqb547yJrWdzDlgJ/8cYFyXU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:43:49 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"value\": \"admin@gmail.com\",\n            \"msg\": \"Email already exists !\",\n            \"path\": \"email\",\n            \"location\": \"body\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "success manager",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"manager@gmail.com\",\r\n\r\n    \"password\": \"123\",\r\n    \"role\": \"manager\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2ViZjJkOGEyY2RiNTA0OGI2MSIsImlhdCI6MTcyODU0OTg2NywiZXhwIjoxNzYwMTA3NDY3fQ.GFbKqgyGj3f-wMWckgBCkeSfuBTMQnmozN-kqR1AehQ; Path=/; Expires=Fri, 11 Oct 2024 08:44:27 GMT; HttpOnly; Secure; SameSite=Strict"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "370"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"172-goV0RDocMZ7mP1iOwYIRsZ0zJ3w\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:44:27 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2ViZjJkOGEyY2RiNTA0OGI2MSIsImVtYWlsIjoibWFuYWdlckBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcyODU0OTg2NywiZXhwIjoxNzI4NTUwNzY3fQ.ZQpMQ_w5r70NB31gtQIg4DkQBW5-r0d-sK6HWATuza0\",\n    \"user\": {\n        \"id\": \"670793ebf2d8a2cdb5048b61\",\n        \"email\": \"manager@gmail.com\",\n        \"role\": \"manager\"\n    },\n    \"message\": \"User registered successfully\"\n}"
+            },
+            {
+              "name": "success client",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"client@gmail.com\",\r\n\r\n    \"password\": \"123\",\r\n    \"role\": \"client\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5NDE3ZjJkOGEyY2RiNTA0OGI2NyIsImlhdCI6MTcyODU0OTkxMSwiZXhwIjoxNzYwMTA3NTExfQ.mOo-Uwon9-d-4opEyJxcHJfynORoRCJ-OvwO_ZAtNu4; Path=/; Expires=Fri, 11 Oct 2024 08:45:11 GMT; HttpOnly; Secure; SameSite=Strict"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "365"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"16d-i1xyRmCaU0I8nJPJPZLIw7sXEIg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:45:11 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5NDE3ZjJkOGEyY2RiNTA0OGI2NyIsImVtYWlsIjoiY2xpZW50QGdtYWlsLmNvbSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mjg1NDk5MTEsImV4cCI6MTcyODU1MDgxMX0.I-4xmnkowyKokEX--gc1yYVpMIR9WdO66Yds4zc0LdQ\",\n    \"user\": {\n        \"id\": \"67079417f2d8a2cdb5048b67\",\n        \"email\": \"client@gmail.com\",\n        \"role\": \"client\"\n    },\n    \"message\": \"User registered successfully\"\n}"
+            },
+            {
+              "name": "register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"clientToDelete@gmail.com\",\r\n\r\n    \"password\": \"123\",\r\n    \"role\": \"client\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/register",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5NDc5ZjJkOGEyY2RiNTA0OGI3MCIsImlhdCI6MTcyODU1MDAwOSwiZXhwIjoxNzYwMTA3NjA5fQ.RMc9gkI6JW-GbqCAUxjkc4stod1YXncU8jWVjy1wd3M; Path=/; Expires=Fri, 11 Oct 2024 08:46:49 GMT; HttpOnly; Secure; SameSite=Strict"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "384"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"180-8GhZnFRNqbF9dd8RZVQycEHJDtE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 08:46:49 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5NDc5ZjJkOGEyY2RiNTA0OGI3MCIsImVtYWlsIjoiY2xpZW50VG9EZWxldGVAZ21haWwuY29tIiwicm9sZSI6ImNsaWVudCIsImlhdCI6MTcyODU1MDAwOSwiZXhwIjoxNzI4NTUwOTA5fQ.RoiEfUS7yanze5ApomNEDbtygRECMYhjH6cxaDhF2EY\",\n    \"user\": {\n        \"id\": \"67079479f2d8a2cdb5048b70\",\n        \"email\": \"clientToDelete@gmail.com\",\n        \"role\": \"client\"\n    },\n    \"message\": \"User registered successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "login"]
+            },
+            "description": "This will allow the user to login."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/login",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImlhdCI6MTcyODU1MTUwNywiZXhwIjoxNzYwMTA5MTA3fQ.BCQnC-QN0oeJ-j66kYefwlVb00PDNCQPdSVszQr2vfE; Path=/; Expires=Fri, 11 Oct 2024 09:11:47 GMT; HttpOnly; Secure; SameSite=Strict"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "354"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"162-Qz+V7LKKO3QY4peTcVg/v30FRZY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:11:47 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"user\": {\n        \"id\": \"670793b7f2d8a2cdb5048b5a\",\n        \"email\": \"admin@gmail.com\",\n        \"role\": \"admin\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUxNTA2LCJleHAiOjE3Mjg1NTI0MDZ9.TwPf4fIh0xzlXMuHA3tGGRRZ1b54v-vZmvDBvklMTww\",\n    \"message\": \"Logged in successfully\"\n}"
+            },
+            {
+              "name": "unvalid email and password",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"sdkjskdjskdj\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/login",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "login"]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "39"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"27-Mm37A2ls1bgL0/D8e3MSpDLbow8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:15:16 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Invalid email or password\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUyODAzLCJleHAiOjE3Mjg1NTM3MDN9.Aw_Ib_9TsuBSvEghXiVw1MOsuZgOFM43bXz6Az7zU8Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "20047ab271eaf5a4ea866efac492a6daebf060debfdd438bd8c80f72fadde90b",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/auth/logout/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "logout", ""]
+            },
+            "description": "Logout for the current device. Will destroy the current refresh token."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "20047ab271eaf5a4ea866efac492a6daebf060debfdd438bd8c80f72fadde90b",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/logout/",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "logout", ""]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "37"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"25-71uUsMgZY3FdZp9j1h5YMrBIOgg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:36:04 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Logged out successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "logoutAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2ViZjJkOGEyY2RiNTA0OGI2MSIsImVtYWlsIjoibWFuYWdlckBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcyODU1Mjk4OCwiZXhwIjoxNzI4NTUzODg4fQ.D57RWRNaSzMHxakq2vnIsBH9aREnhZkgl2aTj3ZflGg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/auth/logout-all",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "logout-all"]
+            },
+            "description": "Logout for this user from all the devices. Clear all the refresh token stored."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/logout-all",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "logout-all"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "54"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"36-6sfEu1FygGzF+NHpfaSrnD2bQYg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:38:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Logged out from all devices successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "refresh token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/auth/refresh-auth",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "refresh-auth"]
+            },
+            "description": "Request to refresh the access token by providing a valid refresh token."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/auth/refresh-auth",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "auth", "refresh-auth"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "237"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"ed-AUQZWNerG6bZsXnUDDPjPbT3lPQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:33:23 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUyODAzLCJleHAiOjE3Mjg1NTM3MDN9.Aw_Ib_9TsuBSvEghXiVw1MOsuZgOFM43bXz6Az7zU8Q\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Authentications api using acces and refresh token."
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUzMjAxLCJleHAiOjE3Mjg1NTQxMDF9.dW_8D6SpftceJj25bArJfVBJpwGzfYl4bTn-TV7v-O4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/user/67079479f2d8a2cdb5048b70",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "user", "67079479f2d8a2cdb5048b70"]
+            },
+            "description": "Deleting user, opertaion done by admin users only."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/user/67079479f2d8a2cdb5048b70",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "user", "67079479f2d8a2cdb5048b70"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "132"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"84-ny8O0In+BpwA0m91c4QRjujywV4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:44:45 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User deleted successfully.\",\n    \"user\": {\n        \"id\": \"67079479f2d8a2cdb5048b70\",\n        \"email\": \"clientToDelete@gmail.com\",\n        \"role\": \"client\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "assign role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUzMjAxLCJleHAiOjE3Mjg1NTQxMDF9.dW_8D6SpftceJj25bArJfVBJpwGzfYl4bTn-TV7v-O4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"role\": \"client\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/user/67079479f2d8a2cdb5048b70",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "user", "67079479f2d8a2cdb5048b70"]
+            },
+            "description": "Assign role given in the body to the user with id in params. Only for admin users."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"role\": \"client\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/user/67079479f2d8a2cdb5048b70",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "user", "67079479f2d8a2cdb5048b70"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "133"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"85-FMPUDh0TqmSUF+JgtVCDVp7H7pI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:44:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Role assigned successfully.\",\n    \"user\": {\n        \"id\": \"67079479f2d8a2cdb5048b70\",\n        \"email\": \"clientToDelete@gmail.com\",\n        \"role\": \"client\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get all users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDkyZWQ5NDBkNWI5YTgwNmM4YjExZCIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NjY5MjYyLCJleHAiOjE3Mjg2NzAxNjJ9.MSDXDdzrMi9A5aqAZ0BBQBNmAd4GNdTbesbmVYQzvaQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/user/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "user", ""]
+            },
+            "description": "Retrieve all the DB users. Operation done by dmin users only."
+          },
+          "response": [
+            {
+              "name": "unauthorized access client",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/user/",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "user", ""]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "33"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"21-wa6yT3v/ToTKolsGIpjQEK4BEQI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:39:31 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Unauthorized access\"\n}"
+            },
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/user/",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "user", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "404"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"194-HGsMsG0K12vCLWNdCz6TAr6sd3E\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:40:25 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Users fetched successfully.\",\n    \"users\": [\n        {\n            \"_id\": \"670793b7f2d8a2cdb5048b5a\",\n            \"email\": \"admin@gmail.com\",\n            \"role\": \"admin\",\n            \"__v\": 11\n        },\n        {\n            \"_id\": \"670793ebf2d8a2cdb5048b61\",\n            \"email\": \"manager@gmail.com\",\n            \"role\": \"manager\",\n            \"__v\": 3\n        },\n        {\n            \"_id\": \"67079417f2d8a2cdb5048b67\",\n            \"email\": \"client@gmail.com\",\n            \"role\": \"client\",\n            \"__v\": 2\n        },\n        {\n            \"_id\": \"67079479f2d8a2cdb5048b70\",\n            \"email\": \"clientToDelete@gmail.com\",\n            \"role\": \"client\",\n            \"__v\": 1\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ],
+      "description": "User management apis."
+    },
+    {
+      "name": "product",
+      "item": [
+        {
+          "name": "get",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUxNzY5LCJleHAiOjE3Mjg1NTI2Njl9._T3wsa2ykHj2NGXsYsctaG9c-euO4HU0wZIjXHnf964",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/product/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "product", ""]
+            },
+            "description": "Get the details of all the products in the db with options for filtering with category and price range and also pagination"
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/product/",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "product", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1081"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"439-pAGDYan+9TsDEvwN0szoYM3Pvtg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:21:51 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"products\": [\n        {\n            \"_id\": \"6704ea3a5f4308aaec91e9ab\",\n            \"name\": \"product1\",\n            \"description\": \"description\",\n            \"price\": 100,\n            \"stock_quantity\": 10,\n            \"createdAt\": \"2024-10-08T08:15:54.203Z\",\n            \"updatedAt\": \"2024-10-08T08:15:54.203Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6704eab15f4308aaec91e9ad\",\n            \"name\": \"product1\",\n            \"description\": \"description\",\n            \"price\": 100,\n            \"stock_quantity\": 10,\n            \"createdAt\": \"2024-10-08T08:17:53.519Z\",\n            \"updatedAt\": \"2024-10-08T08:17:53.519Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6704eab25f4308aaec91e9af\",\n            \"name\": \"product1\",\n            \"description\": \"description\",\n            \"price\": 100,\n            \"stock_quantity\": 10,\n            \"createdAt\": \"2024-10-08T08:17:54.459Z\",\n            \"updatedAt\": \"2024-10-08T08:17:54.459Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6704eab35f4308aaec91e9b1\",\n            \"name\": \"product1\",\n            \"description\": \"description\",\n            \"price\": 100,\n            \"stock_quantity\": 10,\n            \"createdAt\": \"2024-10-08T08:17:55.185Z\",\n            \"updatedAt\": \"2024-10-08T08:17:55.185Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6704f09590acab237c2d7d09\",\n            \"name\": \"product1\",\n            \"description\": \"description\",\n            \"price\": 100,\n            \"stock_quantity\": 10,\n            \"category\": {\n                \"_id\": \"6704f05350879367aec0b043\",\n                \"name\": \"category 1\",\n                \"description\": \"description\",\n                \"__v\": 0\n            },\n            \"__v\": 0\n        }\n    ],\n    \"currentPage\": 1,\n    \"itemsPerPage\": 5,\n    \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUxNzY5LCJleHAiOjE3Mjg1NTI2Njl9._T3wsa2ykHj2NGXsYsctaG9c-euO4HU0wZIjXHnf964",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"product one\",\r\n    \"description\": \"description\",\r\n    \"price\": 250,\r\n    \"stock_quantity\": 20,\r\n    \"category_id\": \"6704f02dc352c5b731849e3f\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/product/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "product", ""]
+            },
+            "description": "Create a new product."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"product one\",\r\n    \"description\": \"description\",\r\n    \"price\": 250,\r\n    \"stock_quantity\": 20,\r\n    \"category_id\": \"6704f02dc352c5b731849e3f\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/product/",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "product", ""]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "218"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"da-8ETbgT6GhOQf2ZysuEru5jnLwy4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:25:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"product registered successfully.\",\n    \"product\": {\n        \"name\": \"product one\",\n        \"description\": \"description\",\n        \"price\": 250,\n        \"stock_quantity\": 20,\n        \"category\": \"6704f02dc352c5b731849e3f\",\n        \"_id\": \"67079d861a66636a3470784b\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2ViZjJkOGEyY2RiNTA0OGI2MSIsImVtYWlsIjoibWFuYWdlckBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcyODU1Mjk4OCwiZXhwIjoxNzI4NTUzODg4fQ.D57RWRNaSzMHxakq2vnIsBH9aREnhZkgl2aTj3ZflGg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/product/6704eab35f4308aaec91e9b1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "product", "6704eab35f4308aaec91e9b1"]
+            },
+            "description": "Delete product with given id."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/product/6704ea3a5f4308aaec91e9ab",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "product", "6704ea3a5f4308aaec91e9ab"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "43"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2b-pfXTHlep+9k1nCwAkF9Jx46CoYw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:26:12 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Product deleted successfully.\"\n}"
+            },
+            {
+              "name": "uauthorized access for manager",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/product/6704eab35f4308aaec91e9b1",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "product", "6704eab35f4308aaec91e9b1"]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "33"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"21-wa6yT3v/ToTKolsGIpjQEK4BEQI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:37:13 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Unauthorized access\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2ViZjJkOGEyY2RiNTA0OGI2MSIsImVtYWlsIjoibWFuYWdlckBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcyODU1Mjk4OCwiZXhwIjoxNzI4NTUzODg4fQ.D57RWRNaSzMHxakq2vnIsBH9aREnhZkgl2aTj3ZflGg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"product one updated\",\r\n    \"description\": \"\",\r\n    \"price\": 2500,\r\n    \"stock_quantity\":10,\r\n    \"category_id\": \"6704f05350879367aec0b043\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/product/6704f09590acab237c2d7d09",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "product", "6704f09590acab237c2d7d09"]
+            },
+            "description": "Update product with given id."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"product one updated\",\r\n    \"description\": \"\",\r\n    \"price\": 2500,\r\n    \"stock_quantity\":10,\r\n    \"category_id\": \"6704f05350879367aec0b043\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/product/6704f09590acab237c2d7d09",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "product", "6704f09590acab237c2d7d09"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "215"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"d7-G+VUNaF+a6GgL3p7ht9UEEItwZI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:31:01 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"product registered successfully.\",\n    \"product\": {\n        \"_id\": \"6704f09590acab237c2d7d09\",\n        \"name\": \"product1\",\n        \"description\": \"description\",\n        \"price\": 100,\n        \"stock_quantity\": 10,\n        \"category\": \"6704f05350879367aec0b043\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "description": "CRUD product apis."
+    },
+    {
+      "name": "category",
+      "item": [
+        {
+          "name": "get",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUxNzY5LCJleHAiOjE3Mjg1NTI2Njl9._T3wsa2ykHj2NGXsYsctaG9c-euO4HU0wZIjXHnf964",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/category",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "category"]
+            },
+            "description": "Retrieve all the categories of the db with pagination."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/category",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "category"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "246"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"f6-YBOrIBZ5f+0iy2Lj59CY4vZa/m0\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:24:59 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"categories\": [\n        {\n            \"_id\": \"6704f02dc352c5b731849e3f\",\n            \"name\": \"category 1\",\n            \"description\": \"description\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6704f05350879367aec0b043\",\n            \"name\": \"category 1\",\n            \"description\": \"description\",\n            \"__v\": 0\n        }\n    ],\n    \"currentPage\": 1,\n    \"itemsPerPage\": 5,\n    \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUyODAzLCJleHAiOjE3Mjg1NTM3MDN9.Aw_Ib_9TsuBSvEghXiVw1MOsuZgOFM43bXz6Az7zU8Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"category XXD\",\r\n    \"description\": \"description\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/category",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "category"]
+            },
+            "description": "Create a new category."
+          },
+          "response": [
+            {
+              "name": "token expired",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"category XXD\",\r\n    \"description\": \"description\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/category",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "category"]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "27"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1b-A1uCYb8BiWD2utfpWzllaB7bXJ4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:32:12 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Token expired\"\n}"
+            },
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"category XXD\",\r\n    \"description\": \"description\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/category",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "category"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "151"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"97-0Iv6qP3Kh80LelGZVGJJ2lFqhnA\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:33:45 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Category registered successfully.\",\n    \"Category\": {\n        \"name\": \"category XXD\",\n        \"description\": \"description\",\n        \"_id\": \"67079f791a66636a3470785f\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDc5M2I3ZjJkOGEyY2RiNTA0OGI1YSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NTUyODAzLCJleHAiOjE3Mjg1NTM3MDN9.Aw_Ib_9TsuBSvEghXiVw1MOsuZgOFM43bXz6Az7zU8Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/category/6704f02dc352c5b731849e3f",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "category", "6704f02dc352c5b731849e3f"]
+            },
+            "description": "Delete a cattegory."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/category/6704f02dc352c5b731849e3f",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "category", "6704f02dc352c5b731849e3f"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "44"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2c-jK53yPnOYJriSwhsDvJcTyvMD2E\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:34:29 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Category deleted successfully.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDhlOTdhNDY1YzAxOTQ2YzUxMTQ1MiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzI4NjM3MzA2LCJleHAiOjE3Mjg2MzgyMDZ9.zj-m1lLRm5E0SCwDHCsU4Ix8cdc8weM3RuGaLrinG8E",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"description\": \"description updated \"\r\n}\r\n            ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/category/6708e9a3465c01946c511457",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "category", "6708e9a3465c01946c511457"]
+            },
+            "description": "Update a category."
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"category 2\",\r\n    \"description\": \"description 2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/category/6704f05350879367aec0b043",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "category", "6704f05350879367aec0b043"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "149"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"95-ceQkdDrvq+gqaFlW2w9ggmYJJBc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Oct 2024 09:35:41 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Category registered successfully.\",\n    \"Category\": {\n        \"_id\": \"6704f05350879367aec0b043\",\n        \"name\": \"category 1\",\n        \"description\": \"description\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "description": "CRUD category apis."
+    }
+  ]
+}

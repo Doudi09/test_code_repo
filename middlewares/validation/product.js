@@ -30,7 +30,6 @@ const validateCreate = [
     .isEmpty()
     .isMongoId()
     .withMessage("Invalid Id !")
-
     .custom((value) => {
       return CategoryModel.isValidId(value);
     })
@@ -58,15 +57,16 @@ const validateFilter = [
       return value && CategoryModel.isValidId(value);
     })
     .withMessage("Please select a valid category !")
-
     .optional({ nullable: true }),
+
   check("priceRangeMin", "priceRangeMax")
     .isFloat({ min: 0 })
     .custom((value, { req }) => {
       if (
-        req.params.priceRangeMax &&
-        req.params.priceRangeMin &&
-        req.params.priceRangeMax < req.params.priceRangeMin
+        req.query.priceRangeMax &&
+        req.query.priceRangeMin &&
+        parseFloat(req.query.priceRangeMax) <
+          parseFloat(req.query.priceRangeMin)
       ) {
         throw new Error("priceRangeMax must be greater than priceRangeMin");
       }

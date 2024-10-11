@@ -1,13 +1,15 @@
-const UserModel = require("../models/user");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
 exports.createUser = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new UserModel({ email, password: hashedPassword, role });
+    //hashing the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    //create a new user
+    const newUser = new User({ email, password: hashedPassword, role });
     await newUser.save();
 
     return res.status(201).json({
@@ -26,14 +28,14 @@ exports.assignRole = async (req, res) => {
   try {
     const { role } = req.body;
     const { id } = req.params;
-    console.log(role, id);
-
-    const user = await UserModel.findById(id);
+    //retrieve the user
+    const user = await User.findById(id);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
+    //updating the role of the user
     user.role = role;
     await user.save();
 
@@ -50,16 +52,18 @@ exports.assignRole = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-
+    //if the id is not provided
     if (!id) {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    const deletedUser = await UserModel.findByIdAndDelete(id);
+    //retrieve the user
+    const deletedUser = await User.findByIdAndDelete(id);
 
     if (!deletedUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
+    //return the deleted user details
     return res.status(200).json({
       message: "User deleted successfully.",
       user: {
@@ -76,8 +80,12 @@ exports.deleteUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await UserModel.find({}, { tokens: 0, password: 0 });
-    res.status(200).json({ message: "Users fetched successfully.", users });
+    //retrieving all the users without their password and tokens list
+    const users = await User.find({}, { tokens: 0, password: 0 });
+    //returning all the users
+    return res
+      .status(200)
+      .json({ message: "Users fetched successfully.", users });
   } catch (error) {
     console.error("Error getting all user:", error.message);
     res.status(500).json({ message: "Internal server error" });

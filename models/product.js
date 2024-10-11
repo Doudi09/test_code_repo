@@ -33,12 +33,10 @@ const ProductSchema = new mongoose.Schema({
 });
 
 ProductSchema.statics = {
-  isValidId(id) {
-    return this.findById(id).then((result) => {
-      if (!result) throw new Error("Product not found");
-
-      return true;
-    });
+  isValidId: async function (id) {
+    const result = await this.findById(id);
+    if (!result) throw new Error("Product not found");
+    return true;
   },
 };
 

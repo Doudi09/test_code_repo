@@ -3,7 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 
-const crypto = require("crypto");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  encryptToken,
+} = require("../utils/auth");
 
 exports.login = async (req, res) => {
   try {
@@ -18,41 +22,26 @@ exports.login = async (req, res) => {
 
     //generating the user access and refresh token :
 
-    const accessToken = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
-      }
-    );
+    const accessToken = generateAccessToken({
+      id: user._id,
+      email: user.email,
+      role: user.role,
+    });
 
-    const refreshToken = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
-      }
-    );
+    const refreshToken = generateRefreshToken({
+      id: user._id,
+    });
 
-    //saving the refresh token to the db
+    //saving the encrypted refresh token to the db
     //crypting the refresh token :
-
-    const encryptedRefreshToken = crypto
-      .createHmac("sha256", process.env.REFRESH_TOKEN_HASH_SECRET)
-      .update(refreshToken)
-      .digest("hex");
+    const encryptedRefreshToken = encryptToken(refreshToken);
 
     //saving it in the tokens list :
+    //each time the user connect using another device, a new refresh token will be added to the tokens list
     user.tokens.push({ token: encryptedRefreshToken });
     await user.save();
 
-    //saving the refresh token in serever http only cookie
+    //saving the refresh token in http only cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true, //to use https
@@ -88,42 +77,25 @@ exports.register = async (req, res) => {
     });
 
     //generating the access and refresh token:
-    const accessToken = jwt.sign(
-      {
-        id: userCreated._id,
-        email: userCreated.email,
-        role: userCreated.role,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
-      }
-    );
+    const accessToken = generateAccessToken({
+      id: userCreated._id,
+      email: userCreated.email,
+      role: userCreated.role,
+    });
 
-    const refreshToken = jwt.sign(
-      {
-        id: userCreated._id,
-      },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
-      }
-    );
-    //saving the refresh token to the db
+    const refreshToken = generateRefreshToken({
+      id: userCreated._id,
+    });
+
+    //saving the encrypted refresh token to the db
     //crypting the refresh token :
-
-    const encryptedRefreshToken = crypto
-      .createHmac("sha256", process.env.REFRESH_TOKEN_HASH_SECRET)
-      .update(refreshToken)
-      .digest("hex");
+    const encryptedRefreshToken = encryptToken(refreshToken);
 
     //saving it in the tokens list :
     userCreated.tokens.push({ token: encryptedRefreshToken });
 
     //saving the user :
     await userCreated.save();
-
-    //saving the refresh token in only http cookie :
 
     //saving the refresh token in serever http only cookie
     res.cookie("refreshToken", refreshToken, {
@@ -149,22 +121,19 @@ exports.register = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    //the user is add by the auth middleware
+    //the user is added by the checkAuth middleware
     const userId = req.user.id;
-
+    //retrieving the user to update the tokens list (since the user saved in the req doesnt have the tokens list)
     const user = await UserModel.findById(userId);
-    console.log("the user in logout is ", user);
 
+    //retrieving the refresh token from the cookie,
+    // so we can delete it from the user tokens list
     const refreshToken = req.cookies.refreshToken;
-    //create a refresh token hash
 
-    const hashedRefreshToken = crypto
-      .createHmac("sha256", process.env.REFRESH_TOKEN_HASH_SECRET)
-      .update(refreshToken)
-      .digest("hex");
+    //encrypt the refresh token
+    const hashedRefreshToken = encryptToken(refreshToken);
 
     //deleting the token from the tokens user
-
     user.tokens = user.tokens.filter(
       (token) => token.token !== hashedRefreshToken
     );
@@ -202,48 +171,41 @@ exports.logoutAllDevices = async (req, res) => {
 
 exports.refreshAccessToken = async (req, res) => {
   try {
+    //retrieving the refresh token from the cookie,
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
       return res.status(401).json({ message: "Invalid refresh token" });
     }
-    console.log("the refresh token is " + refreshToken);
-    //decode the refresh token ==> user id  :
+    //decode the refresh token so we verify that its a valid one, and get the data from it ==> usee_id  :
     const { id: userId } = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET
     );
-    console.log("the user id in refresh token is ", userId);
-    //hashing the token, so we verify in the DB since it has been saved after hashing
-    const encryptedRefreshToken = crypto
-      .createHmac("sha256", process.env.REFRESH_TOKEN_HASH_SECRET)
-      .update(refreshToken)
-      .digest("hex");
 
-    //looking for the user with id and the refresh token :
+    //encrypting the refresh token, so we verify in the DB since it has been saved
+    const encryptedRefreshToken = encryptToken(refreshToken);
+
+    //looking for the user with id and the refresh token crypted :
     const user = await UserModel.findOne({
       _id: userId,
       "tokens.token": encryptedRefreshToken,
     });
 
-    //if the user exists regenerate a new access token
+    //case where no user have the refresh token or the id provided :
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    //if the user exists regenerate a new access token
     //generating new access token
-    const accessToken = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
-      }
-    );
+    const accessToken = generateAccessToken({
+      id: user._id,
+      email: user.email,
+      role: user.role,
+    });
 
+    //sending the new access token:
     return res.status(200).json({ token: accessToken });
   } catch (error) {
     console.error("Error refreshing access token:", error.message);

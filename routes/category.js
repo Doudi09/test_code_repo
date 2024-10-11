@@ -28,32 +28,30 @@ router.get(
 router.put(
   "/:id",
   checkRoleAccess("admin", "manager"),
-
   validateUpdate,
   validator,
   updateCategory
 );
+
 router.delete(
   "/:id",
-
   checkRoleAccess("admin"),
-
   validateId,
   validator,
   deleteCategory
 );
+
 router.post(
   "/",
   checkRoleAccess("admin", "manager"),
-
   validateCreate,
   validator,
   createCategory
 );
+
 router.get(
   "/",
   checkRoleAccess("admin", "manager", "client"),
-
   getAllCategories
 );
 

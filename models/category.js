@@ -20,14 +20,13 @@ const CategorySchema = new mongoose.Schema({
 CategorySchema.statics = {
   isValidId: async function (id) {
     const result = await this.findById(id);
-    console.log("the category valid id function and the result is ", result);
     if (!result) throw new Error("Category not found");
     return true;
   },
 
   nameExits: async function (name) {
     const result = await this.findOne({ name });
-    if (result) return true;
+    if (result) return result;
     return false;
   },
 };

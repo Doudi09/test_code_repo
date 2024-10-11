@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
+const uri =
+  process.env.NODE_ENV === "test"
+    ? process.env.MONGODB_TEST_URL
+    : process.env.MONGODB_URL;
+
 mongoose
-  .connect(process.env.MONGODB_URL, {
+  // .connect(process.env.MONGODB_URL, {
+  .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -10,9 +16,5 @@ mongoose
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
   });
-
-//Model Setup
-require("../models/product");
-require("../models/category");
-require("../models/user");
